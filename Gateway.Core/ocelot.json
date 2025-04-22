@@ -1,53 +1,101 @@
 {
   "Routes": [
     {
-      "DownstreamPathTemplate": "/api/{everything}",
-      "UpstreamPathTemplate": "/api/{everything}",
-      "UpstreamHttpMethod": [
-        "GET",
-        "POST",
-        "PUT",
-        "DELETE",
-        "PATCH",
-        "OPTIONS"
-      ],
-      "DownstreamScheme": "https",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 6001
-        }
-      ],
-      "AddHeadersToRequest": {
-        "Authorization": "{Authorization}"
-      },
-      "RouteIsCaseSensitive": false
-    },
-    {
-      "DownstreamPathTemplate": "/api2/{everything}",
-      "UpstreamPathTemplate": "/api2/{everything}",
-      "UpstreamHttpMethod": [
-        "GET",
-        "POST",
-        "PUT",
-        "DELETE",
-        "PATCH",
-        "OPTIONS"
-      ],
+      "UpstreamPathTemplate": "/Auth/v{version}/{everything}",
+      "DownstreamPathTemplate": "/v{version}/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 6000
+          "Port": 5001
         }
       ],
+      "UpstreamHttpMethod": [
+        "Get",
+        "Post",
+        "Put",
+        "Delete",
+        "Patch",
+        "Options",
+        "Head",
+        "Trace"
+      ],
       "AddHeadersToRequest": {
-        "Authorization": "{Authorization}"
+        "Authorization": "{RequestHeader:Authorization}",
+        "X-Custom-Header": "{RequestHeader:X-Custom-Header}"
       },
-      "RouteIsCaseSensitive": false
+      "RouteIsCaseSensitive": false,
+      "RequestIdKey": "X-Request-Id"
+    },
+    {
+      "UpstreamPathTemplate": "/Routes/v{version}/{everything}",
+      "DownstreamPathTemplate": "/v{version}/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5002
+        }
+      ],
+      "UpstreamHttpMethod": [
+        "Get",
+        "Post",
+        "Put",
+        "Delete",
+        "Patch",
+        "Options",
+        "Head",
+        "Trace"
+      ],
+      "AddHeadersToRequest": {
+        "Authorization": "{RequestHeader:Authorization}",
+        "X-Custom-Header": "{RequestHeader:X-Custom-Header}"
+      },
+      "RouteIsCaseSensitive": false,
+      "RequestIdKey": "X-Request-Id"
+    },
+    {
+      "UpstreamPathTemplate": "/Payments/v{version}/{everything}",
+      "DownstreamPathTemplate": "/v{version}/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5003
+        }
+      ],
+      "UpstreamHttpMethod": [
+        "Get",
+        "Post",
+        "Put",
+        "Delete",
+        "Patch",
+        "Options",
+        "Head",
+        "Trace"
+      ],
+      "AddHeadersToRequest": {
+        "Authorization": "{RequestHeader:Authorization}",
+        "X-Custom-Header": "{RequestHeader:X-Custom-Header}"
+      },
+      "RouteIsCaseSensitive": false,
+      "RequestIdKey": "X-Request-Id"
     }
   ],
   "GlobalConfiguration": {
-    "BaseUrl": "http://localhost:5000"
+    "BaseUrl": "http://localhost:20000",
+    "CorsOptions": {
+      "AllowedOrigins": ["*"],
+      "AllowedMethods": [
+        "GET",
+        "POST",
+        "PUT",
+        "DELETE",
+        "PATCH",
+        "OPTIONS",
+        "HEAD"
+      ],
+      "AllowedHeaders": ["*"]
+    }
   }
 }

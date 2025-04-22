@@ -9,6 +9,9 @@ internal class Program
 
         builder.Configuration.AddJsonFile("ocelot.json", optional: false, reloadOnChange: true);
 
+        builder.Logging.ClearProviders();
+        builder.Logging.AddConsole();
+        builder.Logging.SetMinimumLevel(LogLevel.Debug);
         builder.Services.AddOcelot();
 
         var app = builder.Build();

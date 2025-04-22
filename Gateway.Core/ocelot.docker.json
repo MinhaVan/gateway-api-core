@@ -23,8 +23,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 5001
+          "Host": "auth-api",
+          "Port": 8080
         }
       ],
       "UpstreamHttpMethod": [
@@ -50,8 +50,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 5002
+          "Host": "router-api",
+          "Port": 8080
         }
       ],
       "UpstreamHttpMethod": [
@@ -77,8 +77,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 5003
+          "Host": "van-api",
+          "Port": 8080
         }
       ],
       "UpstreamHttpMethod": [

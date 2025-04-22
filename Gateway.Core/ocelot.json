@@ -1,5 +1,22 @@
 {
-  "Routes": [
+  "GlobalConfiguration": {
+    "BaseUrl": "http://localhost:20000",
+    "CorsOptions": {
+      "AllowedOrigins": ["*"],
+      "AllowedMethods": [
+        "GET",
+        "POST",
+        "PUT",
+        "DELETE",
+        "PATCH",
+        "OPTIONS",
+        "HEAD"
+      ],
+      "AllowedHeaders": ["*"]
+    }
+  },
+
+  "routes": [
     {
       "UpstreamPathTemplate": "/Auth/v{version}/{everything}",
       "DownstreamPathTemplate": "/v{version}/{everything}",
@@ -81,21 +98,5 @@
       "RouteIsCaseSensitive": false,
       "RequestIdKey": "X-Request-Id"
     }
-  ],
-  "GlobalConfiguration": {
-    "BaseUrl": "http://localhost:20000",
-    "CorsOptions": {
-      "AllowedOrigins": ["*"],
-      "AllowedMethods": [
-        "GET",
-        "POST",
-        "PUT",
-        "DELETE",
-        "PATCH",
-        "OPTIONS",
-        "HEAD"
-      ],
-      "AllowedHeaders": ["*"]
-    }
-  }
+  ]
 }

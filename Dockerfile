@@ -2,7 +2,7 @@
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /src
 
-COPY ../Gateway.Core.sln .
+COPY ../Gateway.sln .
 COPY . ./Gateway.Core
 
 WORKDIR /src/Gateway.Core

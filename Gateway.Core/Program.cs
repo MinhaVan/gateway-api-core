@@ -1,4 +1,4 @@
-using Yarp.ReverseProxy;
+using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 var env = Environment.GetEnvironmentVariable("ENV") ?? "local";
@@ -10,6 +10,9 @@ builder.Configuration
     .SetBasePath(Directory.GetCurrentDirectory())
     .AddJsonFile($"appsettings.{env}.json", false, true)
     .AddEnvironmentVariables();
+
+
+Console.WriteLine($"Configuration: {JsonSerializer.Serialize(builder.Configuration)}");
 
 builder.Services.AddReverseProxy()
     .LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"));

@@ -42,18 +42,18 @@ jobs:
             cd ./APIs
             docker compose stop gateway-api-dev || true
             docker compose rm -f gateway-api-dev || true
-            docker rmi apis-gateway-api-dev:latest || true
+            docker rmi gateway-api-dev:latest || true
 
             docker compose build
 
             if docker compose up -d; then
               echo "Deploy DEV com sucesso! Salvando imagem de backup..."
-              docker tag apis-gateway-api-dev:latest apis-gateway-api-dev-backup:latest
+              docker tag gateway-api-dev:latest gateway-api-dev-backup:latest
             else
               echo "Erro no deploy DEV. Rollback iniciado..."
               docker compose down || true
-              docker pull apis-gateway-api-dev-backup:latest
-              docker run -d --name apis-gateway-api-dev:latest apis-gateway-api-dev-backup:latest
+              docker pull gateway-api-dev-backup:latest
+              docker run -d --name gateway-api-dev:latest gateway-api-dev-backup:latest
               echo "Rollback DEV concluído."
               exit 1
             fi
@@ -97,18 +97,18 @@ jobs:
             cd ./APIs
             docker compose stop gateway-api || true
             docker compose rm -f gateway-api || true
-            docker rmi apis-gateway-api:latest || true
+            docker rmi gateway-api:latest || true
 
             docker compose build
 
             if docker compose up -d; then
               echo "Deploy PROD com sucesso! Salvando imagem de backup..."
-              docker tag apis-gateway-api:latest apis-gateway-api-backup:latest
+              docker tag gateway-api:latest gateway-api-backup:latest
             else
               echo "Erro no deploy PROD. Rollback iniciado..."
               docker compose down || true
-              docker pull apis-gateway-api-backup:latest
-              docker run -d --name apis-gateway-api:latest apis-gateway-api-backup:latest
+              docker pull gateway-api-backup:latest
+              docker run -d --name gateway-api:latest gateway-api-backup:latest
               echo "Rollback PROD concluído."
               exit 1
             fi

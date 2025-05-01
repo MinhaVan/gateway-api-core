@@ -18,6 +18,9 @@ builder.Services.AddReverseProxy()
 var app = builder.Build();
 
 app.UseWebSockets();
+#if !DEBUG
+app.UsePathBase("/gateway");
+#endif
 
 // Middleware para logar tudo antes de enviar para o destino
 app.Use(async (context, next) =>

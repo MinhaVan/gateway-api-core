@@ -55,8 +55,8 @@ jobs:
             else
               echo "Erro no deploy DEV. Rollback iniciado..."
               docker compose down || true
-              docker tag apis-gateway-api-backup:latest apis-gateway-api:latest
-              docker run -d --name apis-gateway-api-dev:latest apis-gateway-api-dev-backup:latest
+              docker tag apis-gateway-api-dev-backup:latest apis-gateway-api-dev:latest
+              docker run -d --name gateway-api-dev apis-gateway-api-dev:latest
               echo "Rollback DEV concluído."
               exit 1
             fi
@@ -114,8 +114,8 @@ jobs:
             else
               echo "Erro no deploy PROD. Rollback iniciado..."
               docker compose down || true
-              docker tag apis-gateway-api-dev-backup:latest apis-gateway-api-dev:latest
-              docker run -d --name gateway-api-dev apis-gateway-api-dev:latest
+              docker tag apis-gateway-api-backup:latest apis-gateway-api:latest
+              docker run -d --name gateway-api apis-gateway-api:latest
               echo "Rollback PROD concluído."
               exit 1
             fi

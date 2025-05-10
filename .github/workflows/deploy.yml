@@ -59,87 +59,18 @@ jobs:
             docker compose rm -f gateway-api-dev || true
             docker rmi apis-gateway-api-dev:latest || true
 
-            docker compose build
+            docker compose build gateway-api-dev
 
-            if docker compose up -d; then
+            if docker compose up -d gateway-api-dev; then
               echo "Deploy DEV com sucesso! Salvando imagem de backup..."
               docker tag apis-gateway-api-dev:latest apis-gateway-api-dev-backup:latest
             else
               echo "Erro no deploy DEV. Rollback iniciado..."
-              docker compose down || true
+              docker compose stop gateway-api-dev || true
+              docker compose rm -f gateway-api-dev || true
               docker tag apis-gateway-api-dev-backup:latest apis-gateway-api-dev:latest
               docker run -d --name gateway-api-dev apis-gateway-api-dev:latest
               echo "Rollback DEV concluído."
               exit 1
             fi
           debug: true
-
-  deploy-prod:
-    if: github.ref == 'refs/heads/main'
-    concurrency:
-      group: ${{ github.repository }}-deploy-prod
-      cancel-in-progress: false
-    needs: deploy-dev
-    runs-on: ubuntu-latest
-    environment:
-      name: production
-      url: https://seu-site-prod.com
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Configurar .NET
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: "9.0.x"
-
-      - name: Testes unitários
-        run: |
-          dotnet test --no-build --verbosity normal
-
-      - name: Install SonarScanner
-        run: dotnet tool install --global dotnet-sonarscanner
-
-      - name: Begin Sonar Analysis
-        run: dotnet sonarscanner begin /k:"gateway-api-core" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="http://168.231.96.82:19000"
-
-      - name: Build project
-        run: dotnet build --no-incremental
-
-      - name: End Sonar Analysis
-        run: dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
-
-      - name: SSH Deploy PROD
-        uses: appleboy/ssh-action@v0.1.10
-        with:
-          host: ${{ secrets.VPS_PROD_HOST }}
-          username: ${{ secrets.VPS_PROD_USER }}
-          key: ${{ secrets.VPS_PROD_SSH_KEY }}
-          script: |
-            set -e
-            cd deploy/prod/
-
-            cd ./gateway-api-core
-            git fetch origin && git checkout main && git pull
-
-            cd ../infra
-            git fetch origin && git checkout main && git pull
-
-            cd ./APIs
-            docker compose stop gateway-api || true
-            docker compose rm -f gateway-api || true
-            docker rmi apis-gateway-api:latest || true
-
-            docker compose build
-
-            if docker compose up -d; then
-              echo "Deploy PROD com sucesso! Salvando imagem de backup..."
-              docker tag apis-gateway-api:latest apis-gateway-api-backup:latest
-            else
-              echo "Erro no deploy PROD. Rollback iniciado..."
-              docker compose down || true
-              docker tag apis-gateway-api-backup:latest apis-gateway-api:latest
-              docker run -d --name gateway-api apis-gateway-api:latest
-              echo "Rollback PROD concluído."
-              exit 1
-            fi

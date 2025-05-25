@@ -26,7 +26,6 @@ internal class Program
 #if !DEBUG
 app.UsePathBase("/gateway");
 #endif
-
         app.Use(async (context, next) =>
         {
             var traceId = context.TraceIdentifier;

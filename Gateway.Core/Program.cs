@@ -28,6 +28,7 @@ app.UsePathBase("/gateway");
 #endif
         app.Use(async (context, next) =>
         {
+#if DEBUG
             var traceId = context.TraceIdentifier;
             Console.WriteLine($"[TRACE] {traceId} {context.Request.Method} {context.Request.Path}");
 
@@ -44,7 +45,7 @@ app.UsePathBase("/gateway");
                 context.Request.Body.Position = 0;
                 Console.WriteLine($"[BODY] {body}");
             }
-
+#endif
             await next();
         });
 

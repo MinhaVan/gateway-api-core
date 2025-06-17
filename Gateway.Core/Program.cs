@@ -7,6 +7,16 @@ internal class Program
     private static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+        builder.Services.AddCors(options =>
+        {
+            options.AddDefaultPolicy(policy =>
+            {
+                policy.AllowAnyOrigin()
+                      .AllowAnyMethod()
+                      .AllowAnyHeader();
+            });
+        });
+
         var env = Environment.GetEnvironmentVariable("ENV") ?? "local";
 
         Console.WriteLine($"Environment: {env}");
@@ -21,6 +31,8 @@ internal class Program
             .LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"));
 
         var app = builder.Build();
+
+        app.UseCors();
 
         app.UseWebSockets();
 #if !DEBUG

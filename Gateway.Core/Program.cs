@@ -13,6 +13,7 @@ internal class Program
             {
                 policy.AllowAnyOrigin()
                       .AllowAnyMethod()
+                      .SetIsOriginAllowed(_ => true) // Permitir todas as origens
                       .AllowAnyHeader();
             });
         });
